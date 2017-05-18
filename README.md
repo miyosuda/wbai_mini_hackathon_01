@@ -15,3 +15,9 @@ http://www.riken.jp/pr/press/2015/20150522_1/
 | rnn_action  | SomaticActionRecurrentNetwork | rnnに前回のアクションを入力として追加したネットワーク      |
 | plain_cnn   | SomaticCNNNetwork             | 上のplainモデルににCNNを追加したもの                 |
 | rnn_cnn     | SomaticRecurrentCNNNetwork    | 上のrnnモデルにCNNを追加したもの                    |
+
+
+# 実装メモ
+- 入力が2系統(S1のL5とL2/3,6)あって、一方にしかリカレントしない(M2->S1のL5)構造を再現するため、わざわざrnn_cell.pyの中に、`SomaticRNNCell`などを用意しているのですが、この方が性能があがるから、という訳ではなくて、できるだけ脳の構造に近づけて試してみたかった、というのが理由です。
+- 通常のDeep Learning的に考えるのであれば、通常のもとからTensorFlowにあるrnn_cellやlstm_cellなどを使って、分岐の無いようなモデルにする方がシンプルになりそうです。
+- environment.pyがOpenAI Gymとほぼ同じようなインターフェース(reset(), step())になっているので、Chainerなどで動かしたいかたは、このクラスだけ流用して、他を自前で組んで試していただければ。
